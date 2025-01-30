@@ -6,19 +6,19 @@ public class Destructable : MonoBehaviour
 
     void Start()
     {
-        gameManager = FindObjectOfType<GameManager>(); // GameManager'ý bul
+        gameManager = FindObjectOfType<GameManager>(); 
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         Bullet bullet = collision.GetComponent<Bullet>();
-        if (bullet != null && !bullet.isEnemy) // Eðer düþmanýn vurulduðundan eminsek
+        if (bullet != null && !bullet.isEnemy) 
         {
-            Destroy(gameObject); // Düþmaný yok et
-            Destroy(bullet.gameObject); // Mermiyi yok et
+            Destroy(gameObject); 
+            Destroy(bullet.gameObject); 
             if (gameManager != null)
             {
-                gameManager.EnemyDestroyed(); // GameManager'a haber ver
+                gameManager.EnemyDestroyed(); 
             }
         }
     }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;  // SceneManager'ý kullanabilmek için import ekliyoruz.
+using UnityEngine.SceneManagement;  
 
 public class Ship : MonoBehaviour
 {
@@ -17,7 +17,7 @@ public class Ship : MonoBehaviour
 
     bool shoot;
 
-    private bool isDestroyed = false; // Gemi yok olursa true olacak
+    private bool isDestroyed = false; 
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class Ship : MonoBehaviour
     {
         if (isDestroyed)
         {
-            return; // Eðer gemi yoksa, artýk herhangi bir iþlem yapmamaya devam et
+            return; 
         }
 
         moveUp = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
@@ -49,7 +49,7 @@ public class Ship : MonoBehaviour
             }
         }
 
-        // ESC tuþuna basýldýðýnda menüye dön
+        
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             GoToMenu();
@@ -128,10 +128,10 @@ public class Ship : MonoBehaviour
             {
                 Destroy(gameObject);
                 Destroy(bullet.gameObject);
-                isDestroyed = true; // Gemi yok olduktan sonra bu flag'i true yapýyoruz
+                isDestroyed = true; 
 
-                // Oyun bittiðinde ana menüye dön
-                Invoke("GoToMenu", 1f); // 1 saniye sonra menüye git
+                
+                Invoke("GoToMenu", 1f); 
             }
         }
 
@@ -142,13 +142,13 @@ public class Ship : MonoBehaviour
             Destroy(destructable.gameObject);
             isDestroyed = true;
 
-            // Oyun bittiðinde ana menüye dön
+            
             Invoke("GoToMenu", 1f);
         }
     }
 
     void GoToMenu()
     {
-        SceneManager.LoadScene("Menu"); // Sahne ismini "Menu" olarak deðiþtirdik
+        SceneManager.LoadScene("Menu"); 
     }
 }

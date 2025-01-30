@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (autoShoot && IsVisible()) // Ekranda olup olmadýðýný kontrol et
+        if (autoShoot && IsVisible()) 
         {
             if (delayTimer >= shootDelaySeconds)
             {
