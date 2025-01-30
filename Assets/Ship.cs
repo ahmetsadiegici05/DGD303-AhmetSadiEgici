@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;  
+using UnityEngine.SceneManagement; 
 
 public class Ship : MonoBehaviour
 {
@@ -17,22 +17,18 @@ public class Ship : MonoBehaviour
 
     bool shoot;
 
-    private bool isDestroyed = false; 
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
         guns = transform.GetComponentsInChildren<Gun>();
+        gameManager = FindObjectOfType<GameManager>();  
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isDestroyed)
-        {
-            return; 
-        }
-
         moveUp = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
         moveDown = Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S);
         moveLeft = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
@@ -126,12 +122,9 @@ public class Ship : MonoBehaviour
         {
             if (bullet.isEnemy)
             {
-                Destroy(gameObject);
-                Destroy(bullet.gameObject);
-                isDestroyed = true; 
-
-                
-                Invoke("GoToMenu", 1f); 
+                Destroy(gameObject);  
+                Destroy(bullet.gameObject);  
+                GoToMenu();  
             }
         }
 
@@ -140,10 +133,6 @@ public class Ship : MonoBehaviour
         {
             Destroy(gameObject);
             Destroy(destructable.gameObject);
-            isDestroyed = true;
-
-            
-            Invoke("GoToMenu", 1f);
         }
     }
 

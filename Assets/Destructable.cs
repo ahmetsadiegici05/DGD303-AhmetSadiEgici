@@ -16,6 +16,7 @@ public class Destructable : MonoBehaviour
         {
             Destroy(gameObject); 
             Destroy(bullet.gameObject); 
+
             if (gameManager != null)
             {
                 gameManager.EnemyDestroyed(); 

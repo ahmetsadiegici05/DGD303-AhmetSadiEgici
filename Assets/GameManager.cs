@@ -1,45 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement; 
+using UnityEngine.UI; 
 
 public class GameManager : MonoBehaviour
 {
     public Text winText; 
-    private int enemyCount; 
+    private int totalEnemies; 
+    private int enemiesDestroyed; 
 
     void Start()
     {
         
-        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
-
-        
-        if (winText == null)
-        {
-            GameObject textObject = GameObject.Find("WinText");
-            if (textObject != null)
-            {
-                winText = textObject.GetComponent<Text>();
-            }
-        }
+        totalEnemies = FindObjectsOfType<Destructable>().Length;
+        enemiesDestroyed = 0;
 
        
-        if (winText == null)
-        {
-            Debug.LogError("WinText atanmadý! Unity Inspector'dan atadýðýnýzdan emin olun.");
-            return;
-        }
-
-        
         winText.gameObject.SetActive(false);
     }
 
-    
     public void EnemyDestroyed()
     {
-        enemyCount--; 
-        if (enemyCount <= 0) 
+       
+        enemiesDestroyed++;
+
+        
+        if (enemiesDestroyed >= totalEnemies)
         {
-            winText.gameObject.SetActive(true);
-            winText.text = "YOU WIN!";
+            WinGame();
         }
+    }
+
+    void WinGame()
+    {
+        
+        winText.gameObject.SetActive(true);
+
+        
+        Invoke("GoToMenu", 2f); 
+    }
+
+    void GoToMenu()
+    {
+        SceneManager.LoadScene("Menu"); 
     }
 }

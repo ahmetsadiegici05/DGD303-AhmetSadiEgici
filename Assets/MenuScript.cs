@@ -5,14 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
-  public void PlayButton()
+    public void PlayButton()
     {
-        SceneManager.LoadScene(1);
-
+        SceneManager.LoadScene(1); 
     }
 
     public void QuitButton()
     {
-        Application.Quit();
+        Application.Quit(); 
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("Menu"); 
     }
 }
