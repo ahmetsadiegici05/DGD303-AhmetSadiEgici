@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class Ship : MonoBehaviour
 {
     Gun[] guns;
-
     float moveSpeed = 3;
 
     bool moveUp;
@@ -14,19 +13,13 @@ public class Ship : MonoBehaviour
     bool moveRight;
     bool moveLeft;
     bool speedUp;
-
     bool shoot;
 
-    private GameManager gameManager;
-
-    // Start is called before the first frame update
     void Start()
     {
         guns = transform.GetComponentsInChildren<Gun>();
-        gameManager = FindObjectOfType<GameManager>();  
     }
 
-    // Update is called once per frame
     void Update()
     {
         moveUp = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
@@ -41,47 +34,28 @@ public class Ship : MonoBehaviour
             shoot = false;
             foreach (Gun gun in guns)
             {
-                gun.Shoot();
+                if (gun != null) 
+                {
+                    gun.Shoot();
+                }
             }
-        }
-
-        
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            GoToMenu();
         }
     }
 
     private void FixedUpdate()
     {
         Vector2 pos = transform.position;
-
         float moveAmount = moveSpeed * Time.fixedDeltaTime;
         if (speedUp)
         {
             moveAmount *= 3;
         }
+
         Vector2 move = Vector2.zero;
-
-        if (moveUp)
-        {
-            move.y += moveAmount;
-        }
-
-        if (moveDown)
-        {
-            move.y -= moveAmount;
-        }
-
-        if (moveLeft)
-        {
-            move.x -= moveAmount;
-        }
-
-        if (moveRight)
-        {
-            move.x += moveAmount;
-        }
+        if (moveUp) move.y += moveAmount;
+        if (moveDown) move.y -= moveAmount;
+        if (moveLeft) move.x -= moveAmount;
+        if (moveRight) move.x += moveAmount;
 
         float moveMagnitude = Mathf.Sqrt(move.x * move.x + move.y * move.y);
         if (moveMagnitude > moveAmount)
@@ -92,25 +66,9 @@ public class Ship : MonoBehaviour
 
         pos += move;
 
-        if (pos.x <= 1.5f)
-        {
-            pos.x = 1.5f;
-        }
-
-        if (pos.x >= 16f)
-        {
-            pos.x = 16f;
-        }
-
-        if (pos.y >= 9)
-        {
-            pos.y = 9;
-        }
-
-        if (pos.y <= 1)
-        {
-            pos.y = 1;
-        }
+        
+        pos.x = Mathf.Clamp(pos.x, 1.5f, 16f);
+        pos.y = Mathf.Clamp(pos.y, 1f, 9f);
 
         transform.position = pos;
     }
@@ -118,21 +76,26 @@ public class Ship : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Bullet bullet = collision.GetComponent<Bullet>();
-        if (bullet != null)
+        if (bullet != null && bullet.isEnemy) 
         {
-            if (bullet.isEnemy)
-            {
-                Destroy(gameObject);  
-                Destroy(bullet.gameObject);  
-                GoToMenu();  
-            }
+            Destroy(gameObject); 
+            Destroy(bullet.gameObject); 
+            GoToMenu(); 
         }
 
         Destructable destructable = collision.GetComponent<Destructable>();
-        if (destructable != null)
+        if (destructable != null) 
         {
-            Destroy(gameObject);
+            Destroy(gameObject); 
             Destroy(destructable.gameObject);
+            GoToMenu(); 
+        }
+
+        MoveSin moveSinEnemy = collision.GetComponent<MoveSin>();
+        if (moveSinEnemy != null) 
+        {
+            Destroy(gameObject); 
+            GoToMenu(); 
         }
     }
 
