@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gun : MonoBehaviour
 {
@@ -13,17 +14,14 @@ public class Gun : MonoBehaviour
     float shootTimer = 0f;
     float delayTimer = 0f;
 
-    // Start is called before the first frame update
     void Start()
     {
         direction = (transform.localRotation * Vector2.right).normalized;
-        
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (autoShoot)
+        if (autoShoot && IsVisible()) // Ekranda olup olmadýðýný kontrol et
         {
             if (delayTimer >= shootDelaySeconds)
             {
@@ -42,6 +40,12 @@ public class Gun : MonoBehaviour
                 delayTimer += Time.deltaTime;
             }
         }
+    }
+
+    bool IsVisible()
+    {
+        Vector3 screenPoint = Camera.main.WorldToViewportPoint(transform.position);
+        return screenPoint.x >= 0 && screenPoint.x <= 1 && screenPoint.y >= 0 && screenPoint.y <= 1;
     }
 
     public void Shoot()

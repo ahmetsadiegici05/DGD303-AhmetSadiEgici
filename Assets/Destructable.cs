@@ -1,28 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Destructable : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private GameManager gameManager;
+
     void Start()
     {
-        
+        gameManager = FindObjectOfType<GameManager>(); // GameManager'ý bul
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         Bullet bullet = collision.GetComponent<Bullet>();
-        if (bullet != null)
+        if (bullet != null && !bullet.isEnemy) // Eðer düþmanýn vurulduðundan eminsek
         {
-            if (!bullet.isEnemy) {
-            Destroy(gameObject);
-            Destroy(bullet.gameObject);
+            Destroy(gameObject); // Düþmaný yok et
+            Destroy(bullet.gameObject); // Mermiyi yok et
+            if (gameManager != null)
+            {
+                gameManager.EnemyDestroyed(); // GameManager'a haber ver
             }
         }
     }
